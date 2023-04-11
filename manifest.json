@@ -1,0 +1,50 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Faction System [ COCK ]",
+    "description": "",
+    "uuid": "bf54c442-b769-4035-b5a0-c08cfcd2d2c7",
+    "version": [
+      1,
+      0,
+      1
+    ],
+    "min_engine_version": [
+      1,
+      19,
+      51
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "cf91db37-5cc3-44e3-b2cd-61fa543bf518",
+      "version": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "93806128-a476-4e90-9d4b-411269e8c950",
+      "entry": "scripts/index.js",
+      "version": [
+        1,
+        0,
+        1
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "module_name": "@minecraft/server",
+      "version": "1.1.0-beta"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "1.0.0-beta"
+    }
+  ]
+}
