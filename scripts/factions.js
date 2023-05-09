@@ -439,8 +439,6 @@ world.events.beforeChat.subscribe((data) => {
                 }
 
             }
-            default:
-                return player.sendMessage("§cInvalid command! Use .f help for help!")
         }
     }
     if (player.hasTag("inFactionChat")) {
