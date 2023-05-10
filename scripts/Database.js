@@ -11,7 +11,10 @@ export class Database {
         this.objective = world.scoreboard.getObjective(databaseName) ?? world.scoreboard.addObjective(databaseName, databaseName);
         this.modified = false;
         /**@private */
-        this.data = this.objective.getParticipants().length > 0 ? Object.fromEntries(this.objective.getParticipants().map((x) => [x.displayName.split(":")[0], JSON.parse(x.displayName.split(":")[1].replace(/\\"/g, '"'))])) : {};
+        this.data = this.objective.getParticipants().length > 0 ? Object.fromEntries(this.objective.getParticipants().map(x => {
+                const [key, value] = x.displayName.split(":");
+                return [key, JSON.parse(value)];
+                })) : {};
         /**@private */
         this.createProxy = (target) => {
             return new Proxy(target, {
