@@ -8,13 +8,11 @@ export class Database {
     constructor(databaseName) {
         this.databaseName = databaseName;
         /**@private */
-        this.objective = world.scoreboard.getObjective(databaseName) ?? world.scoreboard.addObjective(databaseName, databaseName);
-        this.modified = false;
+        this.objective = world.scoreboard.getObjective(databaseName) ?? world.scoreboard.addObjective(databaseName, "{}");
         /**@private */
-        this.data = this.objective.getParticipants().length > 0 ? Object.fromEntries(this.objective.getParticipants().map(x => {
-                const [key, value] = x.displayName.split(":");
-                return [key, JSON.parse(value)];
-                })) : {};
+        this.data = this.objective ? JSON.parse(this.objective.displayName) : {}
+        /**@private */
+        this.modified = false;
         /**@private */
         this.createProxy = (target) => {
             return new Proxy(target, {
@@ -60,18 +58,3 @@ export class Database {
     get all() {
         return this.proxy;
     }
-
-    /**
-     * Saves the database. This method is deprecated and not meant to be used.
-     * @private
-     * @summary Use of this method is not recommended as it may not correctly save the database data.
-     */
-    save() {
-
-        try { world.scoreboard.removeObjective(this.databaseName) } catch (e) { console.warn(e) }
-        world.scoreboard.addObjective(this.databaseName, this.databaseName);
-        for (const [key, value] of Object.entries(this.proxy)) {
-            try { overworld.runCommandAsync(`scoreboard players set "${key}:${JSON.stringify(value).replace(/"/g, '\\"')}" ${this.databaseName} 0`) } catch (e) { console.warn(e) }
-        }
-    }
-}
