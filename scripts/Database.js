@@ -68,7 +68,6 @@ export class Database {
         try { world.scoreboard.removeObjective(this.databaseName); } catch { };
         world.scoreboard.addObjective(this.databaseName, this.databaseName);
         for (const key in this.data) {
-            console.warn(key, this.data[key])
             overworld.runCommandAsync(`scoreboard players set "\\"${key}\\":${JSON.stringify(this.data[key]).replace(/"/g, '\\"')}" ${this.databaseName} 0`);
         }
     }
