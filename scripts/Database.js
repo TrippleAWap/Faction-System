@@ -1,5 +1,4 @@
-import { world, system } from "@minecraft/server";
-
+import { world } from "@minecraft/server";
 const overworld = world.getDimension("overworld");
 
 export class Database {
@@ -11,7 +10,7 @@ export class Database {
         /**@private */
         this.objective = world.scoreboard.getObjective(databaseName) ?? world.scoreboard.addObjective(databaseName, "{}");
         /**@private */
-        this.data = this.objective ? JSON.parse(this.objective.displayName) : {}
+        this.data = this.objective.getParticipants().length? JSON.parse(`{${this.objective.getParticipants().map((e) => e.displayName.replace(/\\"/g, '"')).join(",")}}`) : {};
         /**@private */
         this.modified = false;
         /**@private */
@@ -67,6 +66,10 @@ export class Database {
      */
     save() {
         try { world.scoreboard.removeObjective(this.databaseName); } catch { };
-        world.scoreboard.addObjective(this.databaseName, JSON.stringify(this.data));
+        world.scoreboard.addObjective(this.databaseName, this.databaseName);
+        for (const key in this.data) {
+            console.warn(key, this.data[key])
+            overworld.runCommandAsync(`scoreboard players set "\\"${key}\\":${JSON.stringify(this.data[key]).replace(/"/g, '\\"')}" ${this.databaseName} 0`);
+        }
     }
 }
