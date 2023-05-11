@@ -1,6 +1,7 @@
-import { world, system, ScoreboardIdentity } from "@minecraft/server";
+import { world, system } from "@minecraft/server";
 
 const overworld = world.getDimension("overworld");
+
 export class Database {
     /**
      * @param {string} databaseName - The name of the database
@@ -58,3 +59,14 @@ export class Database {
     get all() {
         return this.proxy;
     }
+
+    /**
+     * Saves the database. This method is deprecated and not meant to be used.
+     * @private
+     * @summary Use of this method is not recommended as it may not correctly save the database data.
+     */
+    save() {
+        try { world.scoreboard.removeObjective(this.databaseName); } catch { };
+        world.scoreboard.addObjective(this.databaseName, JSON.stringify(this.data));
+    }
+}
